@@ -19,8 +19,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //salvando no banco como UTC
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIM ZONE")
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
     private OrderStatus status;
 

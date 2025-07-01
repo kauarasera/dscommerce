@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -91,5 +92,10 @@ public class Order {
 
     public Set<OrderItem> getItems() {
         return items;
+    }
+
+    /// Pego items e converto para o Product, ou seja, só vou pegar o produto associado a ele e construo uma lista de Product agora
+    public List<Product> getProducts() {
+        return items.stream().map(x -> x.getProduct()).toList();
     }
 }

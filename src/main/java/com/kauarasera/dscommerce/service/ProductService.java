@@ -4,6 +4,8 @@ import com.kauarasera.dscommerce.dto.ProductDto;
 import com.kauarasera.dscommerce.entities.Product;
 import com.kauarasera.dscommerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,5 +24,12 @@ public class ProductService {
         Product product = result.get(); //pegando produto dentro do Optional
         ProductDto dto = new ProductDto(product);//convertendo os objeto para ProductDto
         return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDto> findyAll(Pageable pageable) {
+        Page<Product> result = repository.findAll(pageable); //findAll por padrao retorna um List, estou buscando no banco de dados todos os produtos com paginacao da lista
+        Page<ProductDto> productDtoList = result.map(x -> new ProductDto(x)); //usando lambda para converter Page dos produtos para ProductDto
+        return productDtoList;
     }
 }

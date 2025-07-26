@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>>findAll(Pageable pageable ) {
+    public ResponseEntity<Page<ProductDto>> findAll(Pageable pageable) {
         Page<ProductDto> dto = service.findyAll(pageable);
         return ResponseEntity.ok(dto);
     }
@@ -42,8 +43,14 @@ public class ProductController {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();// Boa prática: Quando criamos um recurso, alem de dar a resposta
-                                                    // com código 201 no cabeçalho da resposta vai ter o link do recurso
-                                                   // criado que é essa URI que criei.
+        // com código 201 no cabeçalho da resposta vai ter o link do recurso
+        // criado que é essa URI que criei.
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody ProductDto dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 }

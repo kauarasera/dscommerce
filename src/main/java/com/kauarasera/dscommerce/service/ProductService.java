@@ -35,15 +35,24 @@ public class ProductService {
 
     @Transactional
     public ProductDto insert(ProductDto dto) {
+        Product entity = new Product(); //Intancio, Preparamos o objeto
+        copyDtoToEntity(dto, entity); //Copio
+        entity = repository.save(entity); //salvo
+        return new ProductDto(entity); //Retornamos o objeto salvo atulizado
+    }
 
-        Product entity = new Product(); //Preparamos o objeto
+    @Transactional
+    public ProductDto update(Long id, ProductDto dto) {
+        Product entity = repository.getReferenceById(id); //instancio um produto da JPA pelo Id do banco de dados COM A REFERENCIA
+        copyDtoToEntity(dto, entity); //copia
+        entity = repository.save(entity); //salva
+        return new ProductDto(entity); //Retornamos o objeto salvo atulizado
+    }
+
+    private void copyDtoToEntity(ProductDto dto, Product entity) {
         entity.setName(dto.getName()); //Copiamos os dados do DTO
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
-
-        entity = repository.save(entity); //salvamos
-
-        return new ProductDto(entity); //Retornamos o objeto salvo atulizado
     }
 }

@@ -32,4 +32,18 @@ public class ProductService {
         Page<ProductDto> productDtoList = result.map(x -> new ProductDto(x)); //usando lambda para converter Page dos produtos para ProductDto
         return productDtoList;
     }
+
+    @Transactional
+    public ProductDto insert(ProductDto dto) {
+
+        Product entity = new Product(); //Preparamos o objeto
+        entity.setName(dto.getName()); //Copiamos os dados do DTO
+        entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
+        entity.setImgUrl(dto.getImgUrl());
+
+        entity = repository.save(entity); //salvamos
+
+        return new ProductDto(entity); //Retornamos o objeto salvo atulizado
+    }
 }

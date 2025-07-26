@@ -49,6 +49,11 @@ public class ProductService {
         return new ProductDto(entity); //Retornamos o objeto salvo atulizado
     }
 
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id); //Passo o id para deletar e o repository vai até o banco de dados para deletar
+    }
+
     private void copyDtoToEntity(ProductDto dto, Product entity) {
         entity.setName(dto.getName()); //Copiamos os dados do DTO
         entity.setDescription(dto.getDescription());

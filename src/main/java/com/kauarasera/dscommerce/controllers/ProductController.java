@@ -2,6 +2,7 @@ package com.kauarasera.dscommerce.controllers;
 
 import com.kauarasera.dscommerce.dto.ProductDto;
 import com.kauarasera.dscommerce.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> insert(@RequestBody ProductDto dto) {
+    public ResponseEntity<ProductDto> insert(@Valid @RequestBody ProductDto dto) { //Valid = Sempre que receber um DTO essa anotacao ajuda a passar pela validacao que colocamos no DTO
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();// Boa prática: Quando criamos um recurso, alem de dar a resposta
@@ -49,7 +50,7 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody ProductDto dto) {
+    public ResponseEntity<ProductDto> update(@PathVariable Long id, @Valid @RequestBody ProductDto dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
